@@ -1,0 +1,14 @@
+Move to project2 folder
+
+npm init -y
+
+npm install express nodemon ejs
+
+npm install body-parser
+
+go to package.json and copy-paste: "start": "nodemon index.js"
+in scripts{}
+
+for database: npm install oracledb
+
+run project2: npm start

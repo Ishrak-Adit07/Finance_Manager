@@ -58,7 +58,7 @@ router.post("/", async(req, res)=>{
                                                     ('${newUserInfo.username}', TO_DATE('${dobInput}', 'YYYY-MM-DD HH24-MI-SS'), 
                                                     '${newUserInfo.gender}', '${newUserInfo.job}', 
                                                     '${newUserInfo.address}', '${newUserInfo.name}')`;
-        const insertNewUserIntoWalletsInfoQuery = `INSERT INTO "FINANCEMANAGER"."WalletsInfo" VALUES ('${newUserInfo.username}', 0)`;
+        const insertNewUserIntoWalletsInfoQuery = `INSERT INTO "FINANCEMANAGER"."WalletsInfo" VALUES ('${newUserInfo.username}', 0, 0)`;
 
         //Requried insert operations
         let insertResultAccountInfo = await runQuery(insertNewUserIntoAccountInfoQuery);

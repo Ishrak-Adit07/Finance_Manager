@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=devide-width">
+    <style>
+    </style>
+
+    <script type="text/javascript" src="/Project1/models/menu.model.js">
+    </script>
+
+    <title>My Budgets</title>
+    <link rel="stylesheet" href="./css/home.css">
+</head>
+<body style="background-color: rgb(183, 208, 207);">
+    <br>
+    <div class="topnav">
+        <a class="active" href="/home">Home</a>
+        <a href="/newIncomeInfo">Incomes+</a>
+        <a href="/newExpenseInfo">Expenses-</a>
+        <a href="/currentStatus">CurrentStatus</a>
+        <a href="/budgets">Budgets$</a>
+        <a href="/launch">Logout=></a>
+    </div>
+    <h1 style="text-align:center">My Budgets</h1>
+
+    <div style="text-align:center">
+        <img src="./images/usericon.png">
+    </div>
+
+    <h3 style="text-align:center"><%= currentUser.name %></h3>
+    <p style="text-align:center">User ID: <%= currentUser.userID %>'s</p>
+
+        <%if(currentBudgets.length >= 1){ %>
+        
+        <h2 style="text-align:center">Current Budgets</h2>
+        <div style="text-align:center" class="table-container">
+        <table border="1">
+            <th>BudgetID</th>
+            <th>Budget Name</th>
+            <th>Total Amount</th>
+            <th>Spent</th>
+            <th>Left</th>
+            <th>Created On</th>
+            <th>Last Updated On</th>
+            <% for (var i in currentBudgets.reverse() ) { %>
+                <tr>
+                    <td><%= currentBudgets[i].param1 %></td>
+                    <td><%= currentBudgets[i].param2 %></td>
+                    <td><%= currentBudgets[i].param3 %></td>
+                    <td><%= currentBudgets[i].param4 %></td>
+                    <td><%= currentBudgets[i].param5 %></td>
+                    <td><%= currentBudgets[i].param6 %></td>
+                    <td><%= currentBudgets[i].param7 %></td>
+                </tr>
+            <%} %>
+        </table>
+        </div>
+    
+        <%} %>
+        <%if(currentBudgets.length < 1){ %>
+    
+            <h2 style="text-align:center">No Current Budgets</h2>
+            
+        <%} %>
+
+        <form action="/newBudget" method="get" style="text-align:center">
+            <button type="submit">New Budget</button>
+        </form><br>
+
+        <form action="/myBudgets/deleteBudget" method="get" style="text-align:center">
+            <button type="submit">Delete Budget</button>
+        </form>
+
+</body>
+</html>

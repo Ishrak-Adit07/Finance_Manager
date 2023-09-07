@@ -14,7 +14,7 @@
         }
     </script>
 
-    <title>CurrentStatus Page</title>
+    <title>Delete Wallet Page</title>
     <link rel="stylesheet" href="./css/home.css">
 </head>
 <body style="background-color: rgb(183, 208, 207);">
@@ -30,7 +30,7 @@
     <h1 style="text-align:center">Current Stats</h1>
 
     <div style="text-align:center">
-        <img src="./images/usericon.png" onclick="goToAnotherPage()">
+        <img src="./images/usericon.png">
     </div>
 
     <h3 style="text-align:center"><%= currentUser.name %></h3>
@@ -39,7 +39,7 @@
     <%if(currentUser.wallets >= 1){ %>
         
         <div style="text-align:center">
-            <h2>Current Wallets</h2>
+            <h4>Select the wallet you want to delete from current wallets</h4>
             <div style="text-align:center" class="table-container">
             <table border="1">
                 <th>Wallet</th>
@@ -63,11 +63,7 @@
     <%} %>
 
     <div style="text-align:center">
-        <form action="/currentStatus/addWallet" method="post" style="text-align:center">
-            <button type="submit">Add Wallet</button>
-        </form>
-        <br>
-        <form action="/currentStatus/deleteWallet" method="get" style="text-align:center">
+        <form action="/currentStatus/deleteWallet" method="post" style="text-align:center">
             <button type="submit">Delete Wallet</button>
         </form>
     </div><br>

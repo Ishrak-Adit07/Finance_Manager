@@ -8,6 +8,7 @@ var { currentUser } = require('../models/login.model');
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
+const path = require('path');
 
 router.get("/", getCurrentStatusPage);
 
@@ -37,5 +38,9 @@ router.post("/addWallet", async(req, res)=>{
 
     res.redirect("/currentStatus");
 });
+
+router.get("/deleteWallet", (req, res)=>{
+    res.render(path.join(__dirname+"/../views/deleteWallet.ejs"), {currentUser});
+})
 
 module.exports = router;

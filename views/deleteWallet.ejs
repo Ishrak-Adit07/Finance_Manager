@@ -8,10 +8,7 @@
     </style>
 
     <script type="text/javascript" src="/Project1/models/menu.model.js">
-        function goToAnotherPage() {
-            const PORT = 3000;
-            window.location.href = `http://localhost:${PORT}/incomes`; // Replace with your desired URL
-        }
+
     </script>
 
     <title>Delete Wallet Page</title>
@@ -39,8 +36,9 @@
     <%if(currentUser.wallets >= 1){ %>
         
         <div style="text-align:center">
-            <h4>Select the wallet you want to delete from current wallets</h4>
+            <h2>Current Wallets</h2>
             <div style="text-align:center" class="table-container">
+
             <table border="1">
                 <th>Wallet</th>
                 <th>Amount</th>
@@ -54,6 +52,13 @@
             </table>
             </div>
         </div><br>
+
+        <h3 style="text-align:center">Select the wallet you want to delete from current wallets</h3>
+        <select name="walletID" id="walletID" length=1>
+            <% for (var i =1; i <= currentUser.wallets; i++ ) { %>
+                <option value= <%=i%> > <%=i%> </option>
+            <%} %>
+        </select>
 
     <%} %>
     <%if(currentUser.wallets < 1){ %>

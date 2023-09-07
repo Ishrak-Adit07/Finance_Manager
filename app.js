@@ -44,6 +44,9 @@ app.use("/newBudget", newBudgetRouter);
 const myBudgetsRouter = require(path.join(__dirname+"/routes/myBudgets.route.js"));
 app.use("/myBudgets", myBudgetsRouter);
 
+const logoutRouter = require(path.join(__dirname+"/routes/logout.route.js"));
+app.use("/logout", logoutRouter);
+
 app.use((req, res)=>{
     res.send("Wrong URL");
 });

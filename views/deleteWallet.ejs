@@ -53,25 +53,22 @@
             </div>
         </div><br>
 
-        <h3 style="text-align:center">Select the wallet you want to delete from current wallets</h3>
-        <select name="walletID" id="walletID" length=1>
-            <% for (var i =1; i <= currentUser.wallets; i++ ) { %>
-                <option value= <%=i%> > <%=i%> </option>
-            <%} %>
-        </select>
+        <div style="text-align:center">
+            <form action="/deleteWallet" method="post" style="text-align:center">
+                <h3 style="text-align:center">Select the wallet you want to delete</h3>
+                <input type="text" name="walletID" id="walletID" placeholder="Enter wallet ID">     
+                
+                <button type="submit">Delete Wallet</button>
+            </form>
+        </div><br>
 
-    <%} %>
+    <% } %>
+
     <%if(currentUser.wallets < 1){ %>
 
         <h2 style="text-align:center">No Current Wallets</h2>
         
     <%} %>
-
-    <div style="text-align:center">
-        <form action="/currentStatus/deleteWallet" method="post" style="text-align:center">
-            <button type="submit">Delete Wallet</button>
-        </form>
-    </div><br>
 
 </body>
 </html>

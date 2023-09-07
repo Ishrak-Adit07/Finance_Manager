@@ -10,7 +10,7 @@ exports.newExpenseInfo = {
     type: "Food & Drinks"
 };
 
-exports.newBudgetInfo + {
+exports.newBudgetInfo = {
     amount: 0, 
     purpose: "Project",
     lastUpdatedOn: '23-08-2023'

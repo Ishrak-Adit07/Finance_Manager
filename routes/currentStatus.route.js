@@ -41,6 +41,13 @@ router.post("/addWallet", async(req, res)=>{
 
 router.get("/deleteWallet", (req, res)=>{
     res.render(path.join(__dirname+"/../views/deleteWallet.ejs"), {currentUser});
-})
+});
+
+router.post("/deleteWallet", (req, res)=>{
+    let walletToBeDeleted = Number(req.body.walletID);
+    console.log("Wallet to be deleted: "+walletToBeDeleted);
+
+    res.render(path.join(__dirname+"/../views/currentStatus.ejs"), {currentUser});
+});
 
 module.exports = router;

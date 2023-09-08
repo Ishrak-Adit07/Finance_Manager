@@ -47,6 +47,9 @@ app.use("/myBudgets", myBudgetsRouter);
 const deleteWalletRouter = require(path.join(__dirname+"/routes/deleteWallet.route.js"));
 app.use("/deleteWallet", deleteWalletRouter);
 
+const editBudgetsRouter = require(path.join(__dirname+"/routes/editBudgets.route.js"));
+app.use("/editBudgets", editBudgetsRouter);
+
 const logoutRouter = require(path.join(__dirname+"/routes/logout.route.js"));
 app.use("/logout", logoutRouter);
 

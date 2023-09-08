@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=devide-width">
+    <style>
+
+    </style>
+    <title>Edit My Budgets</title>
+    <link rel="stylesheet" href="./css/home.css">
+</head>
+<body style="background-color: rgb(183, 208, 207);">
+    <br>
+    <div class="topnav">
+        <a class="active" href="/home">Home</a>
+        <a href="/newIncomeInfo">Incomes+</a>
+        <a href="/newExpenseInfo">Expenses-</a>
+        <a href="/currentStatus">CurrentStatus</a>
+        <a href="/budgets">Budgets$</a>
+        <a href="/launch">Logout=></a>
+    </div>
+    <h1 style="text-align:center">Edit My Budgets</h1>
+
+    <div style="text-align:center">
+        <img src="./images/usericon.png">
+    </div>
+
+    <h3 style="text-align:center"><%= currentUser.name %></h3>
+    <p style="text-align:center">User ID: <%= currentUser.userID %>'s</p>
+
+    <%if(currentBudgets.length >= 1){ %>
+        
+        <h2 style="text-align:center">Current Budgets</h2>
+        <div style="text-align:center" class="table-container">
+        <table border="1">
+            <th>BudgetID</th>
+            <th>Budget Name</th>
+            <th>Total Amount</th>
+            <th>Spent</th>
+            <th>Left</th>
+            <th>Created On</th>
+            <th>Last Updated On</th>
+            <% for (var i in currentBudgets.reverse() ) { %>
+                <tr>
+                    <td><%= currentBudgets[i].param1 %></td>
+                    <td><%= currentBudgets[i].param2 %></td>
+                    <td><%= currentBudgets[i].param3 %></td>
+                    <td><%= currentBudgets[i].param4 %></td>
+                    <td><%= currentBudgets[i].param5 %></td>
+                    <td><%= currentBudgets[i].param6 %></td>
+                    <td><%= currentBudgets[i].param7 %></td>
+                </tr>
+            <%} %>
+        </table>
+        </div>
+
+        <div style="text-align:center">
+            <form action="/updateBudget" method="post" style="text-align:center">
+                <h3 style="text-align:center">Select the budget you want to edit</h3>
+                <input type="text" name="budgetID" id="budgetID" placeholder="Enter budget ID">
+                
+                <h3 style="text-align:center">Update total budget amount</h3>
+                <input type="text" name="newTotalBudget" id="newTotalBudget" placeholder="Enter new total amount">
+
+                <h3 style="text-align:center">Add to spent amount of money</h3>
+                <input type="text" name="spent" id="spent" placeholder="Enter amount">
+
+                <h3 style="text-align:center">Save from spent amount of money</h3>
+                <input type="text" name="save" id="save" placeholder="Enter amount">
+                
+                <button type="submit">Update Budget</button>
+            </form>
+        </div><br>
+    
+        <%} %>
+        <%if(currentBudgets.length < 1){ %>
+    
+            <h2 style="text-align:center">No Current Budgets</h2>
+            
+        <%} %>
+
+</body>
+</html>

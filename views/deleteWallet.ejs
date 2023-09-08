@@ -56,7 +56,10 @@
         <div style="text-align:center">
             <form action="/deleteWallet" method="post" style="text-align:center">
                 <h3 style="text-align:center">Select the wallet you want to delete</h3>
-                <input type="text" name="walletID" id="walletID" placeholder="Enter wallet ID">     
+                <input type="text" name="walletID" id="walletID" placeholder="Enter wallet ID">
+                
+                <h3 style="text-align:center">If you want to shift the money to another wallet, select one</h3>
+                <input type="text" name="shiftWalletID" id="shiftWalletID" placeholder="Enter shift wallet ID">
                 
                 <button type="submit">Delete Wallet</button>
             </form>

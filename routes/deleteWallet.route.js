@@ -23,6 +23,7 @@ router.post("/", async(req, res)=>{
 
     if(deleteWalletInfo.walletID <= currentUser.wallets && deleteWalletInfo.shiftWalletID <= currentUser.wallets){
         try{
+            deleteWalletInfo.amount = currentUser.amounts[deleteWalletInfo.walletID];
             const deleteWalletFromTablesQuery = `BEGIN
                                                     DELETE_WALLET_FROM_TABLES(:USERID, :WALLETID);
                                                  END;`;
@@ -48,6 +49,16 @@ router.post("/", async(req, res)=>{
             }
             currentUser.amounts.pop();
             currentUser.wallets -= 1;
+
+            if(deleteWalletInfo.shiftWalletID > deleteWalletInfo.walletID){
+                deleteWalletInfo.shiftWalletID = deleteWalletInfo.shiftWalletID-1;
+            }
+            const shiftAmountToWalletQuery = `UPDATE "FINANCEMANAGER"."FinancialInfo"
+                                              SET "Amount" = "Amount"+${deleteWalletInfo.amount}
+                                              WHERE "UserID" LIKE '${currentUser.userID}'
+                                              AND "WalletID" = ${deleteWalletInfo.shiftWalletID}`;
+            let shiftAmountToWalletQueryResult = await runQuery(shiftAmountToWalletQuery);
+            currentUser.amounts[deleteWalletInfo.shiftWalletID] += deleteWalletInfo.amount;
         }catch(error){
             console.log(error);
             console.error("deleteWalletFromTablesQuery/updateTablesAfterDeleteWalletQuery Not Executed");

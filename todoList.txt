@@ -1,9 +1,5 @@
 1#Update current budgets
 
-2#Update the shift wallet
-
-3#Delete wallet
-
 4#Transfer Operations
 
 5#Joint Account Operations

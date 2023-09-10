@@ -1,76 +1,81 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=devide-width">
-    <style>
-    </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=devide-width" />
+    <style></style>
 
     <script type="text/javascript" src="/Project1/models/menu.model.js">
-        function goToAnotherPage() {
-            const PORT = 3000;
-            window.location.href = `http://localhost:${PORT}/incomes`; // Replace with your desired URL
-        }
+      function goToAnotherPage() {
+          const PORT = 3000;
+          window.location.href = `http://localhost:${PORT}/incomes`; // Replace with your desired URL
+      }
     </script>
 
     <title>CurrentStatus Page</title>
-    <link rel="stylesheet" href="./css/home.css">
-</head>
-<body style="background-color: rgb(183, 208, 207);">
-    <br>
+    <link rel="stylesheet" href="./css/home.css" />
+  </head>
+  <body style="background-color: rgb(183, 208, 207)">
+    <br />
     <div class="topnav">
-        <a class="active" href="/home">Home</a>
-        <a href="/newIncomeInfo">Incomes+</a>
-        <a href="/newExpenseInfo">Expenses-</a>
-        <a href="/currentStatus">CurrentStatus</a>
-        <a href="/budgets">Budgets$</a>
-        <a href="/myProfile">My Profile</a>
+      <a class="active" href="/home">Home</a>
+      <a href="/newIncomeInfo">Incomes+</a>
+      <a href="/newExpenseInfo">Expenses-</a>
+      <a href="/currentStatus">CurrentStatus</a>
+      <a href="/budgets">Budgets$</a>
+      <a href="/transaction">Transfer</a>
+      <a href="/myProfile">My Profile</a>
     </div>
-    <h1 style="text-align:center">Current Stats</h1>
+    <h1 style="text-align: center">Current Stats</h1>
 
-    <div style="text-align:center">
-        <img src="./images/usericon.png" onclick="goToAnotherPage()">
+    <div style="text-align: center">
+      <img src="./images/usericon.png" onclick="goToAnotherPage()" />
     </div>
 
-    <h3 style="text-align:center"><%= currentUser.name %></h3>
-    <p style="text-align:center">User ID: <%= currentUser.userID %>'s</p>
+    <h3 style="text-align: center"><%= currentUser.name %></h3>
+    <p style="text-align: center">User ID: <%= currentUser.userID %>'s</p>
 
     <%if(currentUser.wallets >= 1){ %>
-        
-        <div style="text-align:center">
-            <h2>Current Wallets</h2>
-            <div style="text-align:center" class="table-container">
-            <table border="1">
-                <th>Wallet</th>
-                <th>Amount</th>
-                
-                <% for (var i =1; i <= currentUser.wallets; i++ ) { %>
-                    <tr>
-                        <td><%=i%></td>
-                        <td><%= currentUser.amounts[i]%></td>
-                    </tr>
-                <%} %>
-            </table>
-            </div>
-        </div><br>
+
+    <div style="text-align: center">
+      <h2>Current Wallets</h2>
+      <div style="text-align: center" class="table-container">
+        <table border="1">
+          <th>Wallet</th>
+          <th>Amount</th>
+
+          <% for (var i =1; i <= currentUser.wallets; i++ ) { %>
+          <tr>
+            <td><%=i%></td>
+            <td><%= currentUser.amounts[i]%></td>
+          </tr>
+          <%} %>
+        </table>
+      </div>
+    </div>
+    <br />
+
+    <%} %> <%if(currentUser.wallets < 1){ %>
+
+    <h2 style="text-align: center">No Current Wallets</h2>
 
     <%} %>
-    <%if(currentUser.wallets < 1){ %>
 
-        <h2 style="text-align:center">No Current Wallets</h2>
-        
-    <%} %>
-
-    <div style="text-align:center">
-        <form action="/currentStatus/addWallet" method="post" style="text-align:center">
-            <button type="submit">Add Wallet</button>
-        </form>
-        <br>
-        <form action="/deleteWallet" method="get" style="text-align:center">
-            <button type="submit">Delete Wallet</button>
-        </form>
-    </div><br>
-
-</body>
+    <div style="text-align: center">
+      <form
+        action="/currentStatus/addWallet"
+        method="post"
+        style="text-align: center"
+      >
+        <button type="submit">Add Wallet</button>
+      </form>
+      <br />
+      <form action="/deleteWallet" method="get" style="text-align: center">
+        <button type="submit">Delete Wallet</button>
+      </form>
+      <br />
+    </div>
+    <br />
+  </body>
 </html>

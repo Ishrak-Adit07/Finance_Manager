@@ -16,9 +16,7 @@ dbConnection.connect();
 const launchRouter = require(path.join(__dirname + "/routes/launch.route.js"));
 app.use("/launch", launchRouter);
 
-const loginRouter = require(path.join(
-  __dirname + "/routes/loginDummy.route.js"
-));
+const loginRouter = require(path.join(__dirname + "/routes/login.route.js"));
 app.use("/login", loginRouter);
 
 const signupRouter = require(path.join(__dirname + "/routes/signup.route.js"));

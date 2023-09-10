@@ -1,51 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=devide-width">
-    <style>
-
-    </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=devide-width" />
+    <style></style>
     <title>Transaction Page</title>
-    <link rel="stylesheet" href="./css/home.css">
-</head>
-<body style="background-color: rgb(183, 208, 207);">
-    <br>
+    <link rel="stylesheet" href="./css/home.css" />
+  </head>
+  <body style="background-color: rgb(183, 208, 207)">
+    <br />
     <div class="topnav">
-        <a class="active" href="/home">Home</a>
-        <a href="/newIncomeInfo">Incomes+</a>
-        <a href="/newExpenseInfo">Expenses-</a>
-        <a href="/currentStatus">CurrentStatus</a>
-        <a href="/budgets">Budgets$</a>
-        <a href="/myProfile">My Profile</a>
+      <a class="active" href="/home">Home</a>
+      <a href="/newIncomeInfo">Incomes+</a>
+      <a href="/newExpenseInfo">Expenses-</a>
+      <a href="/currentStatus">CurrentStatus</a>
+      <a href="/budgets">Budgets$</a>
+      <a href="/transaction">Transfer</a>
+      <a href="/myProfile">My Profile</a>
     </div>
-    <h1 style="text-align:center">Transaction from..</h1>
+    <h1 style="text-align: center">Transaction from..</h1>
 
-    <div style="text-align:center">
-        <img src="./images/usericon.png">
+    <div style="text-align: center">
+      <img src="./images/usericon.png" />
     </div>
 
-    <h3 style="text-align:center"><%= currentUser.name %></h3>
-    <p style="text-align:center">User ID: <%= currentUser.userID %>'s</p>
+    <h3 style="text-align: center"><%= currentUser.name %></h3>
+    <p style="text-align: center">User ID: <%= currentUser.userID %>'s</p>
 
-        <div style="text-align:center">
-            <form action="/transaction" method="post" style="text-align:center">
-                <h3 style="text-align:center">Wallet ID of Sender </h3>
-                <input type="text" name="senderWalletID" id="senderWalletID" placeholder="Enter your wallet ID">
-                
-                <h3 style="text-align:center">UserID of Receiver </h3>
-                <input type="text" name="receiverUserID" id="receiverUserID" placeholder="Enter userID of receiver">
+    <div style="text-align: center">
+      <form action="/transaction" method="post" style="text-align: center">
+        <h3 style="text-align: center">Wallet ID of Sender</h3>
+        <input
+          type="text"
+          name="senderWalletID"
+          id="senderWalletID"
+          placeholder="Enter your wallet ID"
+        />
 
-                <h3 style="text-align:center">Wallet ID of Receiver </h3>
-                <input type="text" name="receiverWalletID" id="receiverWalletID" placeholder="Enter receiver wallet ID">
+        <h3 style="text-align: center">UserID of Receiver</h3>
+        <input
+          type="text"
+          name="receiverUserID"
+          id="receiverUserID"
+          placeholder="Enter userID of receiver"
+        />
 
-                <h3 style="text-align:center">Transaction Amount</h3>
-                <input type="text" name="amount" id="amount" placeholder="Enter transaction amount">
-                
-                <button type="submit">Transfer Money</button>
-            </form>
-        </div><br>
+        <h3 style="text-align: center">Transaction Amount</h3>
+        <input
+          type="text"
+          name="amount"
+          id="amount"
+          placeholder="Enter transaction amount"
+        />
 
-</body>
+        <button type="submit">Transfer Money</button>
+      </form>
+    </div>
+    <br />
+  </body>
 </html>

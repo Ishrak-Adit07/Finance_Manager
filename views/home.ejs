@@ -1,74 +1,73 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=devide-width">
-    <style>
-    </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=devide-width" />
+    <style></style>
 
     <script type="text/javascript" src="/Project1/models/menu.model.js">
-        function goToAnotherPage() {
-            const PORT = 3000;
-            window.location.href = `http://localhost:${PORT}/incomes`; // Replace with your desired URL
-        }
+      function goToAnotherPage() {
+          const PORT = 3000;
+          window.location.href = `http://localhost:${PORT}/incomes`; // Replace with your desired URL
+      }
     </script>
 
     <title>Home Menu</title>
-    <link rel="stylesheet" href="./css/home.css">
-</head>
-<body style="background-color: rgb(183, 208, 207);">
-    <br>
+    <link rel="stylesheet" href="./css/home.css" />
+  </head>
+  <body style="background-color: rgb(183, 208, 207)">
+    <br />
     <div class="topnav">
-        <a class="active" href="/home">Home</a>
-        <a href="/newIncomeInfo">Incomes+</a>
-        <a href="/newExpenseInfo">Expenses-</a>
-        <a href="/currentStatus">CurrentStatus</a>
-        <a href="/budgets">Budgets$</a>
-        <a href="/myProfile">My Profile</a>
+      <a class="active" href="/home">Home</a>
+      <a href="/newIncomeInfo">Incomes+</a>
+      <a href="/newExpenseInfo">Expenses-</a>
+      <a href="/currentStatus">CurrentStatus</a>
+      <a href="/budgets">Budgets$</a>
+      <a href="/transaction">Transfer</a>
+      <a href="/myProfile">My Profile</a>
     </div>
 
-    <br><br>
-    <h1 style="text-align:center">Home Menu</h1>
+    <br /><br />
+    <h1 style="text-align: center">Home Menu</h1>
 
-    <div style="text-align:center">
-        <img src="./images/usericon.png" onclick="goToAnotherPage()">
+    <div style="text-align: center">
+      <img src="./images/usericon.png" onclick="goToAnotherPage()" />
     </div>
 
-    <h3 style="text-align:center"><%= currentUser.name %></h3>
-    <p style="text-align:center">User ID: <%= currentUser.userID %>'s</p>
-    <br>
+    <h3 style="text-align: center"><%= currentUser.name %></h3>
+    <p style="text-align: center">User ID: <%= currentUser.userID %>'s</p>
+    <br />
 
     <%if(recentActivities.length >= 1){ %>
-        
-        <div style="text-align:center">
-            <h2>Recent activites</h2>
-            <div style="text-align:center" class="table-container">
-            <table border="1">
-                <th>Event</th>
-                <th>Wallet</th>
-                <th>Purpose</th>
-                <th>Amount</th>
-                <th>Date & Time</th>
-                <% for (var i in recentActivities.reverse() ) { %>
-                    <tr>
-                        <td><%= recentActivities[i].param6 %></td>
-                        <td><%= recentActivities[i].param2 %></td>
-                        <td><%= recentActivities[i].param3 %></td>
-                        <td><%= recentActivities[i].param4 %></td>
-                        <td><%= recentActivities[i].param5 %></td>
-                    </tr>
-                <%} %>
-            </table>
-            </div>
-        </div><br>
+
+    <div style="text-align: center">
+      <h2>Recent activites</h2>
+      <div style="text-align: center" class="table-container">
+        <table border="1">
+          <th>Event</th>
+          <th>Wallet</th>
+          <th>Purpose</th>
+          <th>Amount</th>
+          <th>Date & Time</th>
+          <% for (var i in recentActivities.reverse() ) { %>
+          <tr>
+            <td><%= recentActivities[i].param6 %></td>
+            <td><%= recentActivities[i].param2 %></td>
+            <td><%= recentActivities[i].param3 %></td>
+            <td><%= recentActivities[i].param4 %></td>
+            <td><%= recentActivities[i].param5 %></td>
+          </tr>
+          <%} %>
+        </table>
+      </div>
+    </div>
+    <br />
+
+    <%} %> <%if(recentActivities.length < 1){ %>
+
+    <h2 style="text-align: center">No Recent Activities</h2>
 
     <%} %>
-    <%if(recentActivities.length < 1){ %>
-
-        <h2 style="text-align:center">No Recent Activities</h2>
-        
-    <%} %>
-
-</body>
+  </body>
 </html>

@@ -1,81 +1,150 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const bodyParser = require('body-parser');
+const bodyParser = require("body-parser");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-const path = require('path');
-var { currentUser } = require('../models/login.model');
-const { runQuery } = require('../dbConnection/runFunctions');
-const { route } = require('../app');
-const { transactionInfo } = require('../models/transaction.model');
+const path = require("path");
+var { currentUser } = require("../models/login.model");
+const { runQuery } = require("../dbConnection/runFunctions");
+const { route } = require("../app");
+const { transactionInfo } = require("../models/transaction.model");
 
-router.get("/", (req, res)=>{
-    res.render(path.join(__dirname+"/../views/transaction.ejs"), {currentUser});
-})
+router.get("/", (req, res) => {
+  res.render(path.join(__dirname + "/../views/transaction.ejs"), {
+    currentUser,
+  });
+});
 
-router.post("/", async(req, res)=>{
-    transactionInfo.senderUserID = currentUser.userID;
-    transactionInfo.senderWalletID = req.body.senderWalletID;
-    transactionInfo.receiverUserID = req.body.receiverUserID;
-    transactionInfo.receiverWalletID = req.body.receiverWalletID;
-    transactionInfo.amount = req.body.amount;
+router.post("/", async (req, res) => {
+  transactionInfo.senderUserID = currentUser.userID;
+  transactionInfo.senderWalletID = req.body.senderWalletID;
+  transactionInfo.receiverUserID = req.body.receiverUserID;
+  transactionInfo.receiverWalletID = 1;
+  transactionInfo.amount = req.body.amount;
 
-    if(transactionInfo.senderWalletID <= currentUser.wallets){
+  if (0 < transactionInfo.senderWalletID <= currentUser.wallets) {
+    const transactionDateObject = new Date();
+    let year = transactionDateObject.getFullYear();
+    let month = transactionDateObject.getMonth();
+    let dt = transactionDateObject.getDate();
+    let hr = transactionDateObject.getHours();
+    let mm = transactionDateObject.getMinutes();
+    let ss = transactionDateObject.getSeconds();
+    let transactionDateInput = String(
+      year + "-" + month + "-" + dt + " " + hr + "-" + mm + "-" + ss
+    );
+    console.log(transactionDateInput);
+    //New Income id = inc+userid+year+mon+date+hr+min+ss
+    let newIncomeID =
+      "inc_" +
+      transactionInfo.receiverUserID +
+      "_" +
+      year +
+      "." +
+      month +
+      "." +
+      dt +
+      "_" +
+      hr +
+      "." +
+      mm +
+      "." +
+      ss;
+    console.log(newIncomeID);
+    let newExpenseID =
+      "exp_" +
+      currentUser.userID +
+      "_" +
+      year +
+      "." +
+      month +
+      "." +
+      dt +
+      "_" +
+      hr +
+      "." +
+      mm +
+      "." +
+      ss;
+    console.log(newExpenseID);
 
-        const transactionDateObject = new Date();
-        let year = transactionDateObject.getFullYear(); let month = transactionDateObject.getMonth(); let dt = transactionDateObject.getDate();
-        let hr = transactionDateObject.getHours(); let mm = transactionDateObject.getMinutes(); let ss = transactionDateObject.getSeconds();
-        let transactionDateInput = String(year+'-'+month+'-'+dt+' '+hr+'-'+mm+'-'+ss);
-        console.log(transactionDateInput);
-        //New Income id = inc+userid+year+mon+date+hr+min+ss
-        let newIncomeID = "inc_"+transactionInfo.receiverUserID+'_'+year+'.'+month+'.'+dt+'_'+hr+'.'+mm+'.'+ss;
-        console.log(newIncomeID);
-        let newExpenseID = "exp_"+currentUser.userID+'_'+year+'.'+month+'.'+dt+'_'+hr+'.'+mm+'.'+ss;
-        console.log(newExpenseID);
+    console.log(transactionInfo.senderUserID);
+    console.log(transactionInfo.senderWalletID);
+    console.log(transactionInfo.receiverUserID);
+    console.log(transactionInfo.receiverWalletID);
+    console.log(transactionInfo.amount);
 
-        console.log(transactionInfo.senderUserID);
-        console.log(transactionInfo.senderWalletID);
-        console.log(transactionInfo.receiverUserID);
-        console.log(transactionInfo.receiverWalletID);
-        console.log(transactionInfo.amount);
+    //Verifying Receiver information
+    const verifyReceiverIDQuery = `SELECT COUNT(*)
+                              FROM "FINANCEMANAGER"."AccountInfo"
+                              WHERE "UserID" LIKE '${transactionInfo.receiverUserID}'`;
+    const verifyReceiverIDQueryResult = await runQuery(verifyReceiverIDQuery);
+    const receiverCheck = verifyReceiverIDQueryResult[0][0];
+    if (!receiverCheck) {
+      console.log("Receiver not found");
+    }
 
-        const financialIncomeUpdateQuery = `UPDATE "FINANCEMANAGER"."FinancialInfo"
+    if (
+      transactionInfo.senderWalletID > 0 &&
+      transactionInfo.senderWalletID <= currentUser.wallets
+    ) {
+      senderWalletCheck = true;
+    }
+
+    if (currentUser.userID == transactionInfo.receiverUserID) {
+      sameUserID = true;
+    }
+    //Transaction Validity
+    if (
+      currentUser.amounts[transactionInfo.senderWalletID] >=
+        transactionInfo.amount &&
+      receiverCheck &&
+      senderWalletCheck &&
+      !sameUserID
+    ) {
+      const financialIncomeUpdateQuery = `UPDATE "FINANCEMANAGER"."FinancialInfo"
                                             SET "Amount" = "Amount" + ${transactionInfo.amount},
                                             "Last Updated On" = TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS')
                                             WHERE "UserID" LIKE '${transactionInfo.receiverUserID}'
-                                            AND "WalletID" = ${transactionDateObject.receiverWalletID}`;
-        const newIncomeInsertQuery = `INSERT INTO "FINANCEMANAGER"."Incomes" VALUES ('${transactionInfo.receiverUserID}', '${newIncomeID}', 
+                                            AND "WalletID" = ${transactionInfo.receiverWalletID}`;
+      const newIncomeInsertQuery = `INSERT INTO "FINANCEMANAGER"."Incomes" VALUES ('${transactionInfo.receiverUserID}', '${newIncomeID}', 
                                      ${transactionInfo.receiverWalletID}, 'Transaction', 
-                                     ${transactionInfo.amount}, TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS'))`;                                   
-        let newIncomeInsertQueryResult = await runQuery(newIncomeInsertQuery);
-        let financialIncomeUpdateQueryResult = await runQuery(financialIncomeUpdateQuery);
+                                     ${transactionInfo.amount}, TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS'))`;
+      let newIncomeInsertQueryResult = await runQuery(newIncomeInsertQuery);
+      let financialIncomeUpdateQueryResult = await runQuery(
+        financialIncomeUpdateQuery
+      );
 
-        const financialExpenseUpdateQuery = `UPDATE "FINANCEMANAGER"."FinancialInfo"
+      const financialExpenseUpdateQuery = `UPDATE "FINANCEMANAGER"."FinancialInfo"
                                             SET "Amount" = "Amount" - ${transactionInfo.amount},
                                             "Last Updated On" = TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS')
                                             WHERE "UserID" LIKE '${currentUser.userID}'
                                             AND "WalletID" = ${transactionInfo.senderWalletID}`;
-        const newExpenseInsertQuery = `INSERT INTO "FINANCEMANAGER"."Expenses" VALUES ('${currentUser.userID}', '${newExpenseID}', 
+      const newExpenseInsertQuery = `INSERT INTO "FINANCEMANAGER"."Expenses" VALUES ('${currentUser.userID}', '${newExpenseID}', 
                                       ${transactionInfo.senderWalletID}, 'Transaction', 
                                       ${transactionInfo.amount}, TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS'))`;
-        let newExpenseInsertQueryResult = await runQuery(newExpenseInsertQuery);
-        let financialExpenseUpdateQueryResult = await runQuery(financialExpenseUpdateQuery);
+      let newExpenseInsertQueryResult = await runQuery(newExpenseInsertQuery);
+      let financialExpenseUpdateQueryResult = await runQuery(
+        financialExpenseUpdateQuery
+      );
 
-
-        //Transaction Query***********************************************************************
-        //****************************************************************************************
-        
-        //Local variable update in the backend
-        currentUser.amounts[transactionInfo.senderWalletID] -= transactionInfo.amount;
-        console.log(currentUser.amounts);
+      //Transaction Query***********************************************************************
+      //****************************************************************************************
+      const transactionInsertQuery = `INSERT INTO "FINANCEMANAGER"."Transactions" VALUES('${currentUser.userID}', ${transactionInfo.senderWalletID}, 
+                                                                                        '${transactionInfo.receiverUserID}', ${transactionInfo.receiverWalletID}, 
+                                                                                         TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS'), ${transactionInfo.amount})`;
+      //Local variable update in the backend
+      currentUser.amounts[transactionInfo.senderWalletID] -=
+        transactionInfo.amount;
+      console.log(currentUser.amounts);
     }
-    else{
-        console.log("Sender Wallet Not Found");
-    }
+  } else {
+    console.log("Sender Wallet Not Found");
+  }
 
-    res.redirect("/transaction");
+  res.redirect("/transaction");
 });
 
 module.exports = router;

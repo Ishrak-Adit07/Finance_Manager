@@ -1,51 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=devide-width">
-    <style>
-    </style>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=devide-width" />
+    <style></style>
 
     <script type="text/javascript" src="/Project1/models/menu.model.js">
-        function goToAnotherPage() {
-            const PORT = 3000;
-            window.location.href = `http://localhost:${PORT}/incomes`; // Replace with your desired URL
-        }
+      function goToAnotherPage() {
+          const PORT = 3000;
+          window.location.href = `http://localhost:${PORT}/incomes`; // Replace with your desired URL
+      }
     </script>
 
     <title>Budgets Menu</title>
-    <link rel="stylesheet" href="./css/home.css">
-</head>
-<body style="background-color: rgb(183, 208, 207);">
-    <br>
+    <link rel="stylesheet" href="./css/home.css" />
+  </head>
+  <body style="background-color: rgb(183, 208, 207)">
+    <br />
     <div class="topnav">
-        <a class="active" href="/home">Home</a>
-        <a href="/newIncomeInfo">Incomes+</a>
-        <a href="/newExpenseInfo">Expenses-</a>
-        <a href="/currentStatus">CurrentStatus</a>
-        <a href="/budgets">Budgets$</a>
-        <a href="/myProfile">My Profile</a>
+      <a class="active" href="/home">Home</a>
+      <a href="/newIncomeInfo">Incomes+</a>
+      <a href="/newExpenseInfo">Expenses-</a>
+      <a href="/currentStatus">CurrentStatus</a>
+      <a href="/budgets">Budgets$</a>
+      <a href="/transaction">Transfer</a>
+      <a href="/myProfile">My Profile</a>
     </div>
-    <h1 style="text-align:center">Home Menu</h1>
+    <h1 style="text-align: center">Home Menu</h1>
 
-    <div style="text-align:center">
-        <img src="./images/usericon.png" onclick="goToAnotherPage()">
+    <div style="text-align: center">
+      <img src="./images/usericon.png" onclick="goToAnotherPage()" />
     </div>
-    <h3 style="text-align:center"><%= currentUser.name %></h3>
-    <p style="text-align:center">User ID: <%= currentUser.userID %></p>
-    <br>
+    <h3 style="text-align: center"><%= currentUser.name %></h3>
+    <p style="text-align: center">User ID: <%= currentUser.userID %></p>
+    <br />
 
-    <div style="text-align:center">
-        <form action="/editBudgets" method="get" style="text-align:center">
-            <button type="submit">Edit My Budget</button>
-        </form>
-    </div><br>
-    <div style="text-align:center">
-        <form action="/myBudgets" method="get" style="text-align:center">
-            <button type="submit">View My Budgets</button>
-        </form>
-    </div><br>
-
-</body>
+    <div style="text-align: center">
+      <form action="/editBudgets" method="get" style="text-align: center">
+        <button type="submit">Edit My Budget</button>
+      </form>
+    </div>
+    <br />
+    <div style="text-align: center">
+      <form action="/myBudgets" method="get" style="text-align: center">
+        <button type="submit">View My Budgets</button>
+      </form>
+    </div>
+    <br />
+  </body>
 </html>

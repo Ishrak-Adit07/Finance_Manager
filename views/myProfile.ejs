@@ -22,6 +22,7 @@
       <a href="/newExpenseInfo">Expenses-</a>
       <a href="/currentStatus">CurrentStatus</a>
       <a href="/budgets">Budgets$</a>
+      <a href="/transaction">Transfer</a>
       <a href="/myProfile">My Profile</a>
     </div>
     <h1 style="text-align: center">Current Stats</h1>
@@ -32,8 +33,8 @@
 
     <h3 style="text-align: center"><%= currentUser.name %></h3>
     <p style="text-align: center">User ID: <%= currentUser.userID %>'s</p>
-    <p style="text-align: center">Mail: <%= currentUser.mail %>'s</p>
-    <p style="text-align: center">Age: <%= currentUser.age %>'s</p>
+    <p style="text-align: center">Mail: <%= currentUser.mail %></p>
+    <p style="text-align: center">Age: <%= currentUser.age %></p>
 
     <div style="text-align: center">
       <form action="/deleteAccount" method="post" style="text-align: center">

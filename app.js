@@ -16,7 +16,9 @@ dbConnection.connect();
 const launchRouter = require(path.join(__dirname + "/routes/launch.route.js"));
 app.use("/launch", launchRouter);
 
-const loginRouter = require(path.join(__dirname + "/routes/login.route.js"));
+const loginRouter = require(path.join(
+  __dirname + "/routes/loginDummy.route.js"
+));
 app.use("/login", loginRouter);
 
 const signupRouter = require(path.join(__dirname + "/routes/signup.route.js"));
@@ -74,6 +76,11 @@ const myProfileRouter = require(path.join(
   __dirname + "/routes/myProfile.route.js"
 ));
 app.use("/myProfile", myProfileRouter);
+
+const deleteAccountRouter = require(path.join(
+  __dirname + "/routes/deleteAccount.route.js"
+));
+app.use("/deleteAccount", deleteAccountRouter);
 
 const transactionRouter = require(path.join(
   __dirname + "/routes/transaction.route.js"

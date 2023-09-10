@@ -46,30 +46,32 @@ router.post("/", async (req, res) => {
     );
     console.log(budgetEditDateInput);
 
-    const updateTotalAmountQuery = `UPDATE "FINANCEMANAGER"."Budgets"
+    if (editBudgetInfo.totalAmountUpdate > 0) {
+      const updateTotalAmountQuery = `UPDATE "FINANCEMANAGER"."Budgets"
                                         SET "Amount" = ${editBudgetInfo.totalAmountUpdate},
                                         "Last Updated On" = TO_DATE('${budgetEditDateInput}', 'YYYY-MM-DD HH24-MI-SS')
                                         WHERE "UserID" LIKE '${currentUser.userID}'
-                                        AND "BudgetID" = ${editBudgetInfo.budgetID};`;
-    console.log(updateTotalAmountQuery);
-    let updateTotalAmountQueryResult = await runQuery(updateTotalAmountQuery);
+                                        AND "BudgetID" = ${editBudgetInfo.budgetID}`;
+      console.log(updateTotalAmountQuery);
+      let updateTotalAmountQueryResult = await runQuery(updateTotalAmountQuery);
+    }
     //Trigger******************************************************************
 
     const addToSpentQuery = `UPDATE "FINANCEMANAGER"."Budgets"
                                  SET "Spent" = "Spent" + ${editBudgetInfo.addToSpent},
                                  "Left" = "Left" - ${editBudgetInfo.addToSpent},
-                                 TO_DATE('${budgetEditDateInput}', 'YYYY-MM-DD HH24-MI-SS')
+                                 "Last Updated On" = TO_DATE('${budgetEditDateInput}', 'YYYY-MM-DD HH24-MI-SS')
                                  WHERE "UserID" LIKE '${currentUser.userID}'
-                                 AND "BudgetID" = ${editBudgetInfo.budgetID};`;
+                                 AND "BudgetID" = ${editBudgetInfo.budgetID}`;
     console.log(addToSpentQuery);
     let addToSpentQueryResult = await runQuery(addToSpentQuery);
 
     const saveFromSpentQuery = `UPDATE "FINANCEMANAGER"."Budgets"
                                     SET "Spent" = "Spent" - ${editBudgetInfo.saveFromSpent}, 
                                     "Left" = "Left" + ${editBudgetInfo.saveFromSpent},
-                                    TO_DATE('${budgetEditDateInput}', 'YYYY-MM-DD HH24-MI-SS')
+                                    "Last Updated On" = TO_DATE('${budgetEditDateInput}', 'YYYY-MM-DD HH24-MI-SS')
                                     WHERE "UserID" LIKE '${currentUser.userID}'
-                                    AND "BudgetID" = ${editBudgetInfo.budgetID};`;
+                                    AND "BudgetID" = ${editBudgetInfo.budgetID}`;
     console.log(saveFromSpentQuery);
     let saveFromSpentQueryResult = await runQuery(saveFromSpentQuery);
 
@@ -94,10 +96,7 @@ router.post("/", async (req, res) => {
     }
   }
 
-  res.render(path.join(__dirname + "/../views/editBudgets.ejs"), {
-    currentUser,
-    currentBudgets,
-  });
+  res.redirect("/home");
 });
 
 module.exports = router;

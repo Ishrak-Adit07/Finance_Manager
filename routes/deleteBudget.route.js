@@ -26,25 +26,25 @@ router.post("/", async (req, res) => {
   if (deleteBudgetID <= currentUser.budgets) {
     const deleteBudgetQuery = `DELETE FROM "FINANCEMANAGER"."Budgets"
                                WHERE "UserID" LIKE '${currentUser.userID}'
-                               AND "BudgetID" = ${deleteBudgetID};`;
+                               AND "BudgetID" = ${deleteBudgetID}`;
     console.log(deleteBudgetQuery);
     let deleteBudgetQueryResult = await runQuery(deleteBudgetQuery);
 
     const updateBudgetQuery = `UPDATE "FINANCEMANAGER"."Budgets"
                                SET "BudgetID" = "BudgetID"-1
-                               WHERE "BudgetID" > ${deleteBudgetID};`;
+                               WHERE "BudgetID" > ${deleteBudgetID}`;
     console.log(updateBudgetQuery);
+    let updateBudgetQueryResult = await runQuery(updateBudgetQuery);
 
     const updateBudgetNoQuery = `UPDATE "FINANCEMANAGER"."WalletsInfo"
                                 SET "Budgets" = "Budgets"-1
                                 WHERE "UserID" LIKE '${currentUser.userID}'`;
     console.log(updateBudgetNoQuery);
     let updateBudgetNoQueryResult = await runQuery(updateBudgetNoQuery);
+
+    currentUser.budgets -= 1;
   }
-  res.render(path.join(__dirname + "/../views/deleteBudget.ejs"), {
-    currentUser,
-    currentBudgets,
-  });
+  res.redirect("/home");
 });
 
 module.exports = router;

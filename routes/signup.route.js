@@ -29,8 +29,21 @@ router.post("/", async (req, res) =>{
     newUserInfo.job = req.body.job;
     newUserInfo.gender = req.body.gender;
 
-    //Sending to create account page
-    res.redirect("/createAccount");
+    const verifyUniqueMailQuery = `SELECT COUNT(*)
+                                   FROM "FINANCEMANAGER"."AccountInfo"
+                                   WHERE "Mail" LIKE '${newUserInfo.mail}'`;
+    const verifyUniqueMailQueryResult = await runQuery(verifyUniqueMailQuery);
+    console.log("This is from localFunction");
+    const checkUniqueMail = verifyUniqueMailQueryResult[0][0];
+    console.log(checkUniqueMail);
+
+    if(!checkUniqueMail){
+        //Sending to create account page
+        res.redirect("/createAccount");
+    }else{
+        //Keeping in sign up page
+        res.redirect("/signup");
+    }
 });
 
 module.exports = router;

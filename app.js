@@ -53,6 +53,9 @@ app.use("/editBudgets", editBudgetsRouter);
 const myProfileRouter = require(path.join(__dirname+"/routes/myProfile.route.js"));
 app.use("/myProfile", myProfileRouter);
 
+const transactionRouter = require(path.join(__dirname+"/routes/transaction.route.js"));
+app.use("/transaction", transactionRouter);
+
 const logoutRouter = require(path.join(__dirname+"/routes/logout.route.js"));
 app.use("/logout", logoutRouter);
 

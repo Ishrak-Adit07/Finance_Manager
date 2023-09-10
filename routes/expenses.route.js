@@ -41,8 +41,8 @@ router.post("/", async(req, res)=>{
                                             WHERE "UserID" LIKE '${currentUser.userID}'
                                             AND "WalletID" = ${newExpenseInfo.wallet}`;
 
-        let newIncomeInsertQueryResult = await runQuery(newExpenseInsertQuery);
-        let financialIncomeUpdateQueryResult = await runQuery(financialExpenseUpdateQuery);
+        let newExpenseInsertQueryResult = await runQuery(newExpenseInsertQuery);
+        let financialExpenseUpdateQueryResult = await runQuery(financialExpenseUpdateQuery);
 
         console.log(newExpenseInfo.amount);
         console.log(newExpenseInfo.wallet+1);

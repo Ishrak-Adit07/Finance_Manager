@@ -9,3 +9,8 @@ BEGIN
 		:NEW."Amount" = :OLD."Amount";	
 	END IF;
 END;
+
+
+--Edit Budget
+--Delete Wallet/ Account
+--Transaction validity

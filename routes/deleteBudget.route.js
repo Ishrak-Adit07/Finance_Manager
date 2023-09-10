@@ -1,6 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
+const session = require("express-session");
+router.use(
+  session({
+    secret: "financemanager",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 const bodyParser = require("body-parser");
 var { currentUser } = require("../models/login.model");
 const { currentBudgets } = require("../models/myBudget.model");
@@ -14,6 +23,7 @@ router.use(bodyParser.json());
 const path = require("path");
 
 router.get("/", (req, res) => {
+  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/deleteBudget.ejs"), {
     currentUser,
     currentBudgets,
@@ -21,6 +31,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  currentUser = req.session.currentUser;
   let deleteBudgetID = Number(req.body.budgetID);
 
   if (deleteBudgetID <= currentUser.budgets) {

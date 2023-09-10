@@ -1,6 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
+const session = require("express-session");
+router.use(
+  session({
+    secret: "financemanager",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 const bodyParser = require("body-parser");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -12,12 +21,14 @@ const { route } = require("../app");
 const { transactionInfo } = require("../models/transaction.model");
 
 router.get("/", (req, res) => {
+  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/transaction.ejs"), {
     currentUser,
   });
 });
 
 router.post("/", async (req, res) => {
+  currentUser = req.session.currentUser;
   transactionInfo.senderUserID = currentUser.userID;
   transactionInfo.senderWalletID = req.body.senderWalletID;
   transactionInfo.receiverUserID = req.body.receiverUserID;

@@ -1,77 +1,110 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const path = require('path');
-var { currentUser } = require('../models/login.model');
-var { newUserInfo } = require('../models/signup.model.js');
+const session = require("express-session");
+router.use(
+  session({
+    secret: "financemanager",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
+const path = require("path");
+var { currentUser } = require("../models/login.model");
+var { newUserInfo } = require("../models/signup.model.js");
 
 const dbConnection = require("../dbConnection/dbConnection.js");
 const { runQuery } = require("../dbConnection/runFunctions.js");
 dbConnection.connect();
 
-const bodyParser = require('body-parser');
-const { getCreateAccountPage, verifySignUp } = require('../controllers/createAccount.controller');
+const bodyParser = require("body-parser");
+const {
+  getCreateAccountPage,
+  verifySignUp,
+} = require("../controllers/createAccount.controller");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 router.get("/", getCreateAccountPage);
 
-router.post("/", async(req, res)=>{
-    //Fetching username and password 
-    currentUser.userID = newUserInfo.username = req.body.username;
-    console.log(currentUser.userID);
-    let newPassword = req.body.password;
-    console.log(newPassword);
+router.post("/", async (req, res) => {
+  //Fetching username and password
+  currentUser.userID = newUserInfo.username = req.body.username;
+  req.session.userID = currentUser.userID; //********* */
+  console.log(currentUser.userID);
+  let newPassword = req.body.password;
+  console.log(newPassword);
 
-    //Verifying if userid is unique
-    const verifyUniqueUseridQuery = `SELECT COUNT(*)
+  //Verifying if userid is unique
+  const verifyUniqueUseridQuery = `SELECT COUNT(*)
                                      FROM "FINANCEMANAGER"."AccountInfo"
                                      WHERE "UserID" LIKE '${currentUser.userID}'`;
-    const uniqueIdResult = await runQuery(verifyUniqueUseridQuery);
-    console.log("This is from localFunction");
-    const checkUniqueUser = uniqueIdResult[0][0];
-    console.log(checkUniqueUser);
+  const uniqueIdResult = await runQuery(verifyUniqueUseridQuery);
+  console.log("This is from localFunction");
+  const checkUniqueUser = uniqueIdResult[0][0];
+  console.log(checkUniqueUser);
 
-    //Inserting new user into appropraite tables
-    if(!checkUniqueUser){
-        currentUser.name = newUserInfo.name;
-        currentUser.wallets = 0;
-        console.log(newUserInfo.name);
-        console.log(newUserInfo.mail);
+  //Inserting new user into appropraite tables
+  if (!checkUniqueUser) {
+    currentUser.name = newUserInfo.name;
+    req.session.name = currentUser.name; //******** */
+    currentUser.wallets = 0;
+    currentUser.budgets = 0;
+    req.session.wallets = currentUser.wallets; //******** */
+    req.session.budgets = currentUser.budgets; //********* */
+    console.log(newUserInfo.name);
+    console.log(newUserInfo.mail);
+    req.session.mail = newUserInfo.mail; //************* */
 
-        //Constructing date object for input
-        const dobObject = new Date(newUserInfo.dob);
-        let year = dobObject.getFullYear(); let month = dobObject.getMonth(); let dt = dobObject.getDate();
-        let hr = dobObject.getHours(); let mm = dobObject.getMinutes(); let ss = dobObject.getSeconds();
-        let dobInput = String(year+'-'+month+'-'+dt+' '+hr+'-'+mm+'-'+ss);
-        console.log(dobInput);
+    //Constructing date object for input
+    const dobObject = new Date(newUserInfo.dob);
+    let year = dobObject.getFullYear();
+    let month = dobObject.getMonth();
+    let dt = dobObject.getDate();
+    let hr = dobObject.getHours();
+    let mm = dobObject.getMinutes();
+    let ss = dobObject.getSeconds();
+    let dobInput = String(
+      year + "-" + month + "-" + dt + " " + hr + "-" + mm + "-" + ss
+    );
+    console.log(dobInput);
+    currentUser.dob = dobInput;
+    req.session.dob = dobInput;
+    req.session.amounts = currentUser.amounts;
 
-        console.log(newUserInfo.address);
-        console.log(newUserInfo.job);
-        console.log(newUserInfo.gender);
-        console.log(newUserInfo.username);
+    console.log(newUserInfo.address);
+    console.log(newUserInfo.job);
+    console.log(newUserInfo.gender);
+    console.log(newUserInfo.username);
 
-        //Required queries
-        const insertNewUserIntoAccountInfoQuery = `INSERT INTO "FINANCEMANAGER"."AccountInfo" VALUES ('${newUserInfo.username}', 
+    //Required queries
+    const insertNewUserIntoAccountInfoQuery = `INSERT INTO "FINANCEMANAGER"."AccountInfo" VALUES ('${newUserInfo.username}', 
                                                     '${newUserInfo.mail}', '${newPassword}')`;
-        const insertNewUserIntoPersonalInfoQuery = `INSERT INTO "FINANCEMANAGER"."PersonalInfo" VALUES 
+    const insertNewUserIntoPersonalInfoQuery = `INSERT INTO "FINANCEMANAGER"."PersonalInfo" VALUES 
                                                     ('${newUserInfo.username}', TO_DATE('${dobInput}', 'YYYY-MM-DD HH24-MI-SS'), 
                                                     '${newUserInfo.gender}', '${newUserInfo.job}', 
                                                     '${newUserInfo.address}', '${newUserInfo.name}')`;
-        const insertNewUserIntoWalletsInfoQuery = `INSERT INTO "FINANCEMANAGER"."WalletsInfo" VALUES ('${newUserInfo.username}', 0, 0)`;
+    const insertNewUserIntoWalletsInfoQuery = `INSERT INTO "FINANCEMANAGER"."WalletsInfo" VALUES ('${newUserInfo.username}', 0, 0)`;
 
-        //Requried insert operations
-        let insertResultAccountInfo = await runQuery(insertNewUserIntoAccountInfoQuery);
-        let insertResultPersonalInfo  = await runQuery(insertNewUserIntoPersonalInfoQuery);
-        let insertResultWalletsInfo = await runQuery(insertNewUserIntoWalletsInfoQuery);
-        
-        //Logging in
-        res.redirect("/home");
-    }
-    else{
-        let message = "Username not allowed";
-        res.render(path.join(__dirname+"/../views/createAccount.ejs"), {});
-    }
+    //Requried insert operations
+    let insertResultAccountInfo = await runQuery(
+      insertNewUserIntoAccountInfoQuery
+    );
+    let insertResultPersonalInfo = await runQuery(
+      insertNewUserIntoPersonalInfoQuery
+    );
+    let insertResultWalletsInfo = await runQuery(
+      insertNewUserIntoWalletsInfoQuery
+    );
+    req.session.currentUser = currentUser;
+
+    //Logging in
+    res.redirect("/home");
+  } else {
+    let message = "Username not allowed";
+    res.render(path.join(__dirname + "/../views/createAccount.ejs"), {});
+  }
 });
 
 module.exports = router;

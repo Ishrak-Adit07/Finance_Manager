@@ -1,6 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
+const session = require("express-session");
+router.use(
+  session({
+    secret: "financemanager",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 const bodyParser = require("body-parser");
 const { getLogin, verifyLogin } = require("../controllers/login.controller");
 router.use(bodyParser.urlencoded({ extended: false }));
@@ -19,17 +28,14 @@ router.get("/", getLogin);
 router.post("/", async (req, res) => {
   //Collecting log in information
   currentUser.mail = req.body.mail;
-  console.log(currentUser.mail);
+  req.session.mail = currentUser.mail; //************** */
   loggedPassword = String(req.body.password);
-  console.log(loggedPassword);
 
   //Verifying log in information
   const verifyLoginQuery = `SELECT COUNT(*)
                               FROM "FINANCEMANAGER"."AccountInfo"
                               WHERE "Mail" LIKE '${currentUser.mail}'
                               AND "Password" LIKE '${loggedPassword}'`;
-
-  //console.log(verifyLoginQuery);
   const verifyLoginResult = await runQuery(verifyLoginQuery);
   const check = verifyLoginResult[0][0];
 
@@ -39,28 +45,34 @@ router.post("/", async (req, res) => {
                                 FROM "FINANCEMANAGER"."AccountInfo"
                                 WHERE "Mail" LIKE '${currentUser.mail}'`;
     const userIdQueryResult = await runQuery(getUserIdQuery);
-    console.log("This is from localfunction");
     console.log(userIdQueryResult);
     currentUser.userID = userIdQueryResult[0][0];
+    req.session.userID = currentUser.userID; //****************** */
 
     //Age and Name require
     const getAgeQuery = `SELECT "DateOfBirth", ROUND(MONTHS_BETWEEN(SYSDATE, "DateOfBirth")/12, 0), "Name"
                             FROM "FINANCEMANAGER"."PersonalInfo"
-                            WHERE "UserID" LIKE '${currentUser.userID}'`;
+                            WHERE "UserID" LIKE (SELECT "UserID"
+										                            FROM "FINANCEMANAGER"."AccountInfo"
+										                            WHERE "Mail" LIKE '${currentUser.mail}')`;
     const getAgeQueryResult = await runQuery(getAgeQuery);
-    console.log("This is from localfunction");
-    console.log(getAgeQueryResult);
+
     currentUser.dob = getAgeQueryResult[0][0];
     currentUser.age = getAgeQueryResult[0][1];
     currentUser.name = getAgeQueryResult[0][2];
+    req.session.name = currentUser.name; //***************** */
+    req.session.age = currentUser.age; //******************** */
+    req.session.dob = currentUser.dob; //******************** */
 
     //Collecting number of wallets the user owns
     let walletCountQuery = `SELECT "Wallets"
-                                FROM "FINANCEMANAGER"."WalletsInfo"
-                                WHERE "UserID" LIKE '${currentUser.userID}'`;
+                            FROM "FINANCEMANAGER"."WalletsInfo"
+                            WHERE "UserID" LIKE (SELECT "UserID"
+										                            FROM "FINANCEMANAGER"."AccountInfo"
+										                            WHERE "Mail" LIKE '${currentUser.mail}')`;
     let walletCountQueryResult = await runQuery(walletCountQuery);
     currentUser.wallets = walletCountQueryResult[0][0];
-    console.log(currentUser.wallets);
+    req.session.wallets = currentUser.wallets; //****************** */
     for (var i = 1; i <= currentUser.wallets; i++) {
       currentUser.amounts.push(0);
     }
@@ -68,18 +80,19 @@ router.post("/", async (req, res) => {
     //Collecting number of budgets the user owns
     let budgetCountQuery = `SELECT "Budgets"
                             FROM "FINANCEMANAGER"."WalletsInfo"
-                            WHERE "UserID" LIKE '${currentUser.userID}'`;
+                            WHERE "UserID" LIKE (SELECT "UserID"
+										                            FROM "FINANCEMANAGER"."AccountInfo"
+										                            WHERE "Mail" LIKE '${currentUser.mail}')`;
     let budgetCountQueryResult = await runQuery(budgetCountQuery);
     currentUser.budgets = budgetCountQueryResult[0][0];
-    console.log(currentUser.budgets);
-    for (var i = 1; i <= currentUser.budgets; i++) {
-      //currentUser.amounts.push(0);
-    }
+    req.session.budgets = currentUser.budgets; //**********************/
 
     //Collecting existing amount of money in each wallet of the user as he/she logs in
     const collectAmountsInWalletsQuery = `SELECT "WalletID", "Amount"
                                               FROM "FINANCEMANAGER"."FinancialInfo"
-                                              WHERE "UserID" LIKE '${currentUser.userID}'`;
+                                              WHERE "UserID" LIKE (SELECT "UserID"
+										                                               FROM "FINANCEMANAGER"."AccountInfo"
+										                                               WHERE "Mail" LIKE '${currentUser.mail}')`;
     let collectAmountsInWalletsQueryResult = await runQuery(
       collectAmountsInWalletsQuery
     );
@@ -87,6 +100,8 @@ router.post("/", async (req, res) => {
       currentUser.amounts[collectAmountsInWalletsQueryResult[i][0]] =
         collectAmountsInWalletsQueryResult[i][1];
     }
+    req.session.amounts = currentUser.amounts; //***************************/
+    req.session.currentUser = currentUser;
 
     //Then we enter home page of application
     res.redirect("/home");

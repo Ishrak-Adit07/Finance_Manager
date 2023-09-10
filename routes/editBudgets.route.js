@@ -2,6 +2,15 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 
+const session = require("express-session");
+router.use(
+  session({
+    secret: "financemanager",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 const bodyParser = require("body-parser");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
@@ -12,6 +21,7 @@ const { currentBudgets } = require("../models/myBudget.model");
 const { editBudgetInfo } = require("../models/editBudgets.model");
 
 router.get("/", (req, res) => {
+  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/editBudgets.ejs"), {
     currentUser,
     currentBudgets,

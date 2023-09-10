@@ -1,6 +1,15 @@
 const express = require("express");
 const router = express.Router();
 
+const session = require("express-session");
+router.use(
+  session({
+    secret: "financemanager",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+
 const bodyParser = require("body-parser");
 const {
   getNewBudgetPage,
@@ -12,9 +21,13 @@ const { runQuery } = require("../dbConnection/runFunctions");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-router.get("/", getNewBudgetPage);
+router.get("/", (req, res) => {
+  currentUser = req.session.currentUser;
+  res.render(path.join(__dirname + "/../views/newBudget.ejs"), { currentUser });
+});
 
 router.post("/", async (req, res) => {
+  currentUser = req.session.currentUser;
   newBudgetInfo.amount = Number(req.body.amount);
   newBudgetInfo.purpose = String(req.body.purpose);
 

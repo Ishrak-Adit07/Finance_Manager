@@ -1,5 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const path = require("path");
+
+const session = require("express-session");
+router.use(
+  session({
+    secret: "financemanager",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 const bodyParser = require("body-parser");
 const {
@@ -13,9 +23,15 @@ const { runQuery } = require("../dbConnection/runFunctions");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-router.get("/", getExpenseInfoPage);
+router.get("/", (req, res) => {
+  currentUser = req.session.currentUser;
+  res.render(path.join(__dirname + "/../views/newexpense.ejs"), {
+    currentUser,
+  });
+});
 
 router.post("/", async (req, res) => {
+  currentUser = req.session.currentUser;
   newExpenseInfo.amount = Number(req.body.amount);
   newExpenseInfo.wallet = Number(req.body.wallet);
   newExpenseInfo.type = req.body.type;

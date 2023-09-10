@@ -1,5 +1,15 @@
 const express = require("express");
 const router = express.Router();
+const path = require("path");
+
+const session = require("express-session");
+router.use(
+  session({
+    secret: "financemanager",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 const bodyParser = require("body-parser");
 const {
@@ -12,7 +22,10 @@ const { runQuery } = require("../dbConnection/runFunctions");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-router.get("/", getIncomeInfoPage);
+router.get("/", (req, res) => {
+  currentUser = req.session.currentUser;
+  res.render(path.join(__dirname + "/../views/newIncome.ejs"), { currentUser });
+});
 
 router.post("/", async (req, res) => {
   newIncomeInfo.amount = Number(req.body.amount);

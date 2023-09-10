@@ -6,6 +6,16 @@ app.set("view engine", "ejs");
 //Static public
 app.use(express.static("public"));
 
+const session = require("express-session");
+app.use(
+  session({
+    secret: "financemanager",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
+app.use(express.json());
+
 const path = require("path");
 path.join(__dirname + "/dbConnection/dbConnection.js");
 const dbConnection = require(path.join(

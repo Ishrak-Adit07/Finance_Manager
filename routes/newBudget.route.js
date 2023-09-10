@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const path = require("path");
 
 const session = require("express-session");
 router.use(
@@ -16,7 +17,7 @@ const {
   saveNewBudget,
 } = require("../controllers/newBudget.controller");
 var newBudgetInfo = require("../models/newCashInfo.model.js");
-const { currentUser } = require("../models/login.model");
+var { currentUser } = require("../models/login.model");
 const { runQuery } = require("../dbConnection/runFunctions");
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());

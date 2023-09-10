@@ -100,6 +100,11 @@ const deleteBudgetRouter = require(path.join(
 ));
 app.use("/deleteBudget", deleteBudgetRouter);
 
+const shiftWalletRouter = require(path.join(
+  __dirname + "/routes/shiftWallet.route.js"
+));
+app.use("/shiftWallet", shiftWalletRouter);
+
 const logoutRouter = require(path.join(__dirname + "/routes/logout.route.js"));
 app.use("/logout", logoutRouter);
 

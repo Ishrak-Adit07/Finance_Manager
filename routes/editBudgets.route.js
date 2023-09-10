@@ -58,7 +58,7 @@ router.post("/", async (req, res) => {
     if (editBudgetInfo.totalAmountUpdate > 0) {
       const updateTotalAmountQuery = `UPDATE "FINANCEMANAGER"."Budgets"
                                         SET "Amount" = ${editBudgetInfo.totalAmountUpdate},
-                                        "Last Updated On" = TO_DATE('${budgetEditDateInput}', 'YYYY-MM-DD HH24-MI-SS')
+                                        "Last Updated On" = SYSDATE
                                         WHERE "UserID" LIKE '${currentUser.userID}'
                                         AND "BudgetID" = ${editBudgetInfo.budgetID}`;
       console.log(updateTotalAmountQuery);
@@ -69,7 +69,7 @@ router.post("/", async (req, res) => {
     const addToSpentQuery = `UPDATE "FINANCEMANAGER"."Budgets"
                                  SET "Spent" = "Spent" + ${editBudgetInfo.addToSpent},
                                  "Left" = "Left" - ${editBudgetInfo.addToSpent},
-                                 "Last Updated On" = TO_DATE('${budgetEditDateInput}', 'YYYY-MM-DD HH24-MI-SS')
+                                 "Last Updated On" = SYSDATE
                                  WHERE "UserID" LIKE '${currentUser.userID}'
                                  AND "BudgetID" = ${editBudgetInfo.budgetID}`;
     console.log(addToSpentQuery);
@@ -78,7 +78,7 @@ router.post("/", async (req, res) => {
     const saveFromSpentQuery = `UPDATE "FINANCEMANAGER"."Budgets"
                                     SET "Spent" = "Spent" - ${editBudgetInfo.saveFromSpent}, 
                                     "Left" = "Left" + ${editBudgetInfo.saveFromSpent},
-                                    "Last Updated On" = TO_DATE('${budgetEditDateInput}', 'YYYY-MM-DD HH24-MI-SS')
+                                    "Last Updated On" = SYSDATE
                                     WHERE "UserID" LIKE '${currentUser.userID}'
                                     AND "BudgetID" = ${editBudgetInfo.budgetID}`;
     console.log(saveFromSpentQuery);

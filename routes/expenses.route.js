@@ -73,10 +73,10 @@ router.post("/", async (req, res) => {
 
     const newExpenseInsertQuery = `INSERT INTO "FINANCEMANAGER"."Expenses" VALUES ('${currentUser.userID}', '${newExpenseID}', 
                                      ${newExpenseInfo.wallet}, '${newExpenseInfo.type}', 
-                                     ${newExpenseInfo.amount}, TO_DATE('${expenseDateInput}', 'YYYY-MM-DD HH24-MI-SS'))`;
+                                     ${newExpenseInfo.amount}, SYSDATE)`;
     const financialExpenseUpdateQuery = `UPDATE "FINANCEMANAGER"."FinancialInfo"
                                             SET "Amount" = "Amount" - ${newExpenseInfo.amount},
-                                            "Last Updated On" = TO_DATE('${expenseDateInput}', 'YYYY-MM-DD HH24-MI-SS')
+                                            "Last Updated On" = SYSDATE
                                             WHERE "UserID" LIKE '${currentUser.userID}'
                                             AND "WalletID" = ${newExpenseInfo.wallet}`;
 

@@ -61,7 +61,7 @@ router.post("/", async (req, res) => {
   //console.log(check);
   check = verifyLoginResult.outBinds.check;
 
-  if (check) {
+  if (check == "T") {
     //Getting userid and other information for further use in application
     const getUserIdQuery = `SELECT "UserID"
                                 FROM "FINANCEMANAGER"."AccountInfo"

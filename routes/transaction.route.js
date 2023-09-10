@@ -41,26 +41,25 @@ router.post("/", async(req, res)=>{
         console.log(transactionInfo.receiverWalletID);
         console.log(transactionInfo.amount);
 
-        const newIncomeInsertQuery = `INSERT INTO "FINANCEMANAGER"."Incomes" VALUES ('${transactionInfo.receiverUserID}', '${newIncomeID}', 
-                                     ${transactionInfo.receiverWalletID}, 'Transaction', 
-                                     ${transactionInfo.amount}, TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS'))`;
         const financialIncomeUpdateQuery = `UPDATE "FINANCEMANAGER"."FinancialInfo"
                                             SET "Amount" = "Amount" + ${transactionInfo.amount},
                                             "Last Updated On" = TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS')
                                             WHERE "UserID" LIKE '${transactionInfo.receiverUserID}'
-                                            AND "WalletID" = ${transactionDateObject.receiverWalletID}`;                                   
+                                            AND "WalletID" = ${transactionDateObject.receiverWalletID}`;
+        const newIncomeInsertQuery = `INSERT INTO "FINANCEMANAGER"."Incomes" VALUES ('${transactionInfo.receiverUserID}', '${newIncomeID}', 
+                                     ${transactionInfo.receiverWalletID}, 'Transaction', 
+                                     ${transactionInfo.amount}, TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS'))`;                                   
         let newIncomeInsertQueryResult = await runQuery(newIncomeInsertQuery);
         let financialIncomeUpdateQueryResult = await runQuery(financialIncomeUpdateQuery);
 
-        const newExpenseInsertQuery = `INSERT INTO "FINANCEMANAGER"."Expenses" VALUES ('${currentUser.userID}', '${newExpenseID}', 
-                                     ${transactionInfo.senderWalletID}, 'Transaction', 
-                                     ${transactionInfo.amount}, TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS'))`;
         const financialExpenseUpdateQuery = `UPDATE "FINANCEMANAGER"."FinancialInfo"
                                             SET "Amount" = "Amount" - ${transactionInfo.amount},
                                             "Last Updated On" = TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS')
                                             WHERE "UserID" LIKE '${currentUser.userID}'
                                             AND "WalletID" = ${transactionInfo.senderWalletID}`;
-
+        const newExpenseInsertQuery = `INSERT INTO "FINANCEMANAGER"."Expenses" VALUES ('${currentUser.userID}', '${newExpenseID}', 
+                                      ${transactionInfo.senderWalletID}, 'Transaction', 
+                                      ${transactionInfo.amount}, TO_DATE('${transactionDateInput}', 'YYYY-MM-DD HH24-MI-SS'))`;
         let newExpenseInsertQueryResult = await runQuery(newExpenseInsertQuery);
         let financialExpenseUpdateQueryResult = await runQuery(financialExpenseUpdateQuery);
 

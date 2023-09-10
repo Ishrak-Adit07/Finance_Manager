@@ -11,7 +11,7 @@
       src="/Project1/models/menu.model.js"
     ></script>
 
-    <title>My Budgets</title>
+    <title>Delete Budget Page</title>
     <link rel="stylesheet" href="./css/home.css" />
   </head>
   <body style="background-color: rgb(183, 208, 207)">
@@ -24,7 +24,7 @@
       <a href="/budgets">Budgets$</a>
       <a href="/launch">Logout=></a>
     </div>
-    <h1 style="text-align: center">My Budgets</h1>
+    <h1 style="text-align: center">Current Budgets</h1>
 
     <div style="text-align: center">
       <img src="./images/usericon.png" />
@@ -59,19 +59,25 @@
       </table>
     </div>
 
+    <div style="text-align: center">
+      <form action="/deleteBudget" method="post" style="text-align: center">
+        <h3 style="text-align: center">Select the budget you want to delete</h3>
+        <input
+          type="text"
+          name="budgetID"
+          id="budgetID"
+          placeholder="Enter budget ID to delete"
+        />
+
+        <button type="submit">Delete Budget</button>
+      </form>
+    </div>
+    <br />
+
     <%} %> <%if(currentBudgets.length < 1){ %>
 
     <h2 style="text-align: center">No Current Budgets</h2>
 
     <%} %>
-
-    <form action="/newBudget" method="get" style="text-align: center">
-      <button type="submit">New Budget</button>
-    </form>
-    <br />
-
-    <form action="/deleteBudget" method="get" style="text-align: center">
-      <button type="submit">Delete Budget</button>
-    </form>
   </body>
 </html>

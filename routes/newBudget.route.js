@@ -22,12 +22,10 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 router.get("/", (req, res) => {
-  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/newBudget.ejs"), { currentUser });
 });
 
 router.post("/", async (req, res) => {
-  currentUser = req.session.currentUser;
   newBudgetInfo.amount = Number(req.body.amount);
   newBudgetInfo.purpose = String(req.body.purpose);
 

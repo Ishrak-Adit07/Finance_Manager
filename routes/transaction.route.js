@@ -21,14 +21,12 @@ const { route } = require("../app");
 const { transactionInfo } = require("../models/transaction.model");
 
 router.get("/", (req, res) => {
-  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/transaction.ejs"), {
     currentUser,
   });
 });
 
 router.post("/", async (req, res) => {
-  currentUser = req.session.currentUser;
   transactionInfo.senderUserID = currentUser.userID;
   transactionInfo.senderWalletID = req.body.senderWalletID;
   transactionInfo.receiverUserID = req.body.receiverUserID;

@@ -23,7 +23,6 @@ router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
 router.get("/", (req, res) => {
-  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/newIncome.ejs"), { currentUser });
 });
 

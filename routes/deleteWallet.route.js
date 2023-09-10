@@ -20,14 +20,12 @@ const path = require("path");
 const { deleteWalletInfo } = require("../models/deleteInfo.model");
 
 router.get("/", (req, res) => {
-  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/deleteWallet.ejs"), {
     currentUser,
   });
 });
 
 router.post("/", async (req, res) => {
-  currentUser = req.session.currentUser;
   deleteWalletInfo.walletID = Number(req.body.walletID);
   console.log("Wallet to be deleted: " + deleteWalletInfo.walletID);
   deleteWalletInfo.shiftWalletID = Number(req.body.shiftWalletID);

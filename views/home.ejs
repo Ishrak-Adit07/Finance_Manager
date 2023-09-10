@@ -50,7 +50,7 @@
           <th>Purpose</th>
           <th>Amount</th>
           <th>Date & Time</th>
-          <% for (var i in recentActivities ) { %>
+          <% for (var i in recentActivities.reverse() ) { %>
           <tr>
             <td><%= recentActivities[i].param6 %></td>
             <td><%= recentActivities[i].param2 %></td>

@@ -21,9 +21,7 @@ const { runQuery } = require("../dbConnection/runFunctions.js");
 const { recentActivities } = require("../models/home.model");
 
 router.get("/", async (req, res) => {
-  currentUser = req.session.currentUser;
-  const maxRowNumber = 10;
-  /*
+  const maxRowNumber = 5;
   const recentActivitiesQuery = `SELECT * FROM (SELECT * 
                                                   FROM "FINANCEMANAGER"."Incomes"
                                                   WHERE "UserID" LIKE '${currentUser.userID}'
@@ -35,16 +33,6 @@ router.get("/", async (req, res) => {
                                                   WHERE "UserID" LIKE '${currentUser.userID}'
                                                   ORDER BY "Date" DESC)
                                    WHERE ROWNUM <= ${maxRowNumber}`;
-  */
-  const recentActivitiesQuery = `SELECT * FROM (SELECT * FROM (SELECT * 
-                                                FROM "FINANCEMANAGER"."Incomes"
-                                                WHERE "UserID" LIKE 'wincheng')
-                                                UNION
-                                                SELECT * FROM (SELECT * 
-                                                FROM "FINANCEMANAGER"."Expenses"
-                                                WHERE "UserID" LIKE 'wincheng'))
-                                WHERE ROWNUM <= 10
-                                ORDER BY "Date" ASC`;
   let recentActivitiesQueryResult = await runQuery(recentActivitiesQuery);
 
   recentActivities.length = 0;

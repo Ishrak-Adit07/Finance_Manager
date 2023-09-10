@@ -18,7 +18,6 @@ var { currentUser } = require("../models/login.model");
 const { runQuery } = require("../dbConnection/runFunctions");
 
 router.post("/", async (req, res) => {
-  currentUser = req.session.currentUser;
   const deleteAccountQuery = `DELETE FROM "FINANCEMANAGER"."AccountInfo"
                                 WHERE "UserID" LIKE '${currentUser.userID}'`;
   let deleteAccountQueryResult = await runQuery(deleteAccountQuery);

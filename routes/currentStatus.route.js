@@ -23,7 +23,6 @@ router.use(bodyParser.json());
 const path = require("path");
 
 router.get("/", (req, res) => {
-  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/currentStatus.ejs"), {
     currentUser,
   });
@@ -34,7 +33,6 @@ router.post("/", async (req, res) => {
 });
 
 router.post("/addWallet", async (req, res) => {
-  currentUser = req.session.currentUser;
   console.log("This is from addWallet");
   console.log(currentUser.userID);
 

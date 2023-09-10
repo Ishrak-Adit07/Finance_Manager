@@ -26,7 +26,6 @@ const { runQuery } = require("../dbConnection/runFunctions");
 const { currentBudgets } = require("../models/myBudget.model");
 
 router.get("/", async (req, res) => {
-  currentUser = req.session.currentUser;
   const getMyBudgetInfosQuery = `SELECT * FROM "FINANCEMANAGER"."Budgets"
                                    WHERE "UserID" LIKE '${currentUser.userID}'`;
   let getMyBudgetInfosQueryResult = await runQuery(getMyBudgetInfosQuery);

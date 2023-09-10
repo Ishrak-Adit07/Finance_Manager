@@ -1,15 +1,6 @@
 const express = require("express");
 const router = express.Router();
 
-const session = require("express-session");
-router.use(
-  session({
-    secret: "financemanager",
-    resave: false,
-    saveUninitialized: true,
-  })
-);
-
 const path = require("path");
 var { currentUser } = require("../models/login.model");
 var { newUserInfo } = require("../models/signup.model.js");
@@ -31,7 +22,6 @@ router.get("/", getCreateAccountPage);
 router.post("/", async (req, res) => {
   //Fetching username and password
   currentUser.userID = newUserInfo.username = req.body.username;
-  req.session.userID = currentUser.userID; //********* */
   console.log(currentUser.userID);
   let newPassword = req.body.password;
   console.log(newPassword);
@@ -48,14 +38,10 @@ router.post("/", async (req, res) => {
   //Inserting new user into appropraite tables
   if (!checkUniqueUser) {
     currentUser.name = newUserInfo.name;
-    req.session.name = currentUser.name; //******** */
     currentUser.wallets = 0;
     currentUser.budgets = 0;
-    req.session.wallets = currentUser.wallets; //******** */
-    req.session.budgets = currentUser.budgets; //********* */
     console.log(newUserInfo.name);
     console.log(newUserInfo.mail);
-    req.session.mail = newUserInfo.mail; //************* */
 
     //Constructing date object for input
     const dobObject = new Date(newUserInfo.dob);
@@ -70,8 +56,6 @@ router.post("/", async (req, res) => {
     );
     console.log(dobInput);
     currentUser.dob = dobInput;
-    req.session.dob = dobInput;
-    req.session.amounts = currentUser.amounts;
 
     console.log(newUserInfo.address);
     console.log(newUserInfo.job);
@@ -97,7 +81,6 @@ router.post("/", async (req, res) => {
     let insertResultWalletsInfo = await runQuery(
       insertNewUserIntoWalletsInfoQuery
     );
-    req.session.currentUser = currentUser;
 
     //Logging in
     res.redirect("/home");

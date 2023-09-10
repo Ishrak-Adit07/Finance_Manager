@@ -19,7 +19,6 @@ var { currentUser } = require("../models/login.model");
 const path = require("path");
 
 router.get("/", async (req, res) => {
-  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/myProfile.ejs"), { currentUser });
 });
 

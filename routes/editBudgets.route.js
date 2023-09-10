@@ -21,7 +21,6 @@ const { currentBudgets } = require("../models/myBudget.model");
 const { editBudgetInfo } = require("../models/editBudgets.model");
 
 router.get("/", (req, res) => {
-  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/editBudgets.ejs"), {
     currentUser,
     currentBudgets,

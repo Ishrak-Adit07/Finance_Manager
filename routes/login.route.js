@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const oracledb = require("oracledb");
 
 const session = require("express-session");
 router.use(
@@ -19,8 +20,9 @@ const path = require("path");
 
 const dbConnection = require("../dbConnection/dbConnection.js");
 dbConnection.connect();
-const { runQuery } = require("../dbConnection/runFunctions.js");
+const { runQuery, runFunction } = require("../dbConnection/runFunctions.js");
 var { currentUser, loggedPassword } = require("../models/login.model");
+const { log } = require("console");
 //const { verifyLoginQuery } = require('../queriesAndBinds/login.queries');
 
 router.get("/", getLogin);
@@ -32,12 +34,32 @@ router.post("/", async (req, res) => {
   loggedPassword = String(req.body.password);
 
   //Verifying log in information
+  /*
   const verifyLoginQuery = `SELECT COUNT(*)
                               FROM "FINANCEMANAGER"."AccountInfo"
                               WHERE "Mail" LIKE '${currentUser.mail}'
                               AND "Password" LIKE '${loggedPassword}'`;
   const verifyLoginResult = await runQuery(verifyLoginQuery);
   const check = verifyLoginResult[0][0];
+  */
+
+  const verifyLoginQuery = `BEGIN
+                              :check := VERIFY_LOGIN(:MAIL, :PASS);
+                            END;`;
+  const verifyLoginQueryBinds = {
+    MAIL: currentUser.mail,
+    PASS: loggedPassword,
+    check: { dir: oracledb.BIND_OUT, type: oracledb.VARCHAR2 },
+  };
+
+  const verifyLoginResult = await runFunction(
+    verifyLoginQuery,
+    verifyLoginQueryBinds
+  );
+  console.log(verifyLoginResult.outBinds);
+
+  //console.log(check);
+  check = verifyLoginResult.outBinds.check;
 
   if (check) {
     //Getting userid and other information for further use in application

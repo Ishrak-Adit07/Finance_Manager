@@ -23,7 +23,6 @@ router.use(bodyParser.json());
 const path = require("path");
 
 router.get("/", (req, res) => {
-  currentUser = req.session.currentUser;
   res.render(path.join(__dirname + "/../views/deleteBudget.ejs"), {
     currentUser,
     currentBudgets,
@@ -31,7 +30,6 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", async (req, res) => {
-  currentUser = req.session.currentUser;
   let deleteBudgetID = Number(req.body.budgetID);
 
   if (deleteBudgetID <= currentUser.budgets) {

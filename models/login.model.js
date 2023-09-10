@@ -1,5 +1,6 @@
 var currentUser ={
     name: "Ishrak Adit",
+    mail: "dummy@gmail.com",
     userID: 1234,
     age: 22,
     wallets: 0,

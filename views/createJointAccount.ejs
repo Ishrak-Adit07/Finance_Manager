@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=devide-width" />
+    <style></style>
+    <title>Create Joint Account</title>
+    <link rel="stylesheet" href="./css/home.css" />
+  </head>
+  <body style="background-color: rgb(183, 208, 207)">
+    <h1 style="text-align: center">Create Joint Account</h1>
+
+    <div style="text-align: center">
+      <form action="/createJoinAccount" method="post" style="text-align: center">
+        <h3 style="text-align: center">Select at least one userID to create joint account</h3>
+        <div>
+          <label for="name">UserID1: </label>
+          <input type="text" name="userid1" id="userid1" placeholder="Enter User ID" />
+        </div>
+        <br />
+        <div>
+            <label for="name">UserID2: </label>
+            <input type="text" name="userid2" id="userid2" placeholder="Enter User ID" />
+          </div>
+          <br />
+        <div>
+            <label for="name">UserID3: </label>
+            <input type="text" name="userid3" id="userid3" placeholder="Enter User ID" />
+        </div>
+          <br />
+        <div>
+            <label for="name">UserID4: </label>
+            <input type="text" name="userid4" id="userid4" placeholder="Enter User ID" />
+        </div>
+        <br />
+        <div>
+            <label for="name">Initial amount: </label>
+            <input type="text" name="amount" id="amount" placeholder="Enter amount" />
+        </div>
+        <br />
+
+        <button type="submit">Create Joint Account</button>
+        <button type="reset">Clear</button>
+      </form>
+    </div>
+  </body>
+</html>

@@ -30,7 +30,6 @@ router.get("/", getLogin);
 router.post("/", async (req, res) => {
   //Collecting log in information
   currentUser.mail = req.body.mail;
-  req.session.mail = currentUser.mail; //************** */
   loggedPassword = String(req.body.password);
 
   //Verifying log in information
@@ -69,7 +68,6 @@ router.post("/", async (req, res) => {
     const userIdQueryResult = await runQuery(getUserIdQuery);
     console.log(userIdQueryResult);
     currentUser.userID = userIdQueryResult[0][0];
-    req.session.userID = currentUser.userID; //****************** */
 
     //Age and Name require
     const getAgeQuery = `SELECT "DateOfBirth", ROUND(MONTHS_BETWEEN(SYSDATE, "DateOfBirth")/12, 0), "Name"
@@ -82,9 +80,6 @@ router.post("/", async (req, res) => {
     currentUser.dob = getAgeQueryResult[0][0];
     currentUser.age = getAgeQueryResult[0][1];
     currentUser.name = getAgeQueryResult[0][2];
-    req.session.name = currentUser.name; //***************** */
-    req.session.age = currentUser.age; //******************** */
-    req.session.dob = currentUser.dob; //******************** */
 
     //Collecting number of wallets the user owns
     let walletCountQuery = `SELECT "Wallets"
@@ -94,7 +89,6 @@ router.post("/", async (req, res) => {
 										                            WHERE "Mail" LIKE '${currentUser.mail}')`;
     let walletCountQueryResult = await runQuery(walletCountQuery);
     currentUser.wallets = walletCountQueryResult[0][0];
-    req.session.wallets = currentUser.wallets; //****************** */
     for (var i = 1; i <= currentUser.wallets; i++) {
       currentUser.amounts.push(0);
     }
@@ -107,7 +101,6 @@ router.post("/", async (req, res) => {
 										                            WHERE "Mail" LIKE '${currentUser.mail}')`;
     let budgetCountQueryResult = await runQuery(budgetCountQuery);
     currentUser.budgets = budgetCountQueryResult[0][0];
-    req.session.budgets = currentUser.budgets; //**********************/
 
     //Collecting existing amount of money in each wallet of the user as he/she logs in
     const collectAmountsInWalletsQuery = `SELECT "WalletID", "Amount"
@@ -122,8 +115,6 @@ router.post("/", async (req, res) => {
       currentUser.amounts[collectAmountsInWalletsQueryResult[i][0]] =
         collectAmountsInWalletsQueryResult[i][1];
     }
-    req.session.amounts = currentUser.amounts; //***************************/
-    req.session.currentUser = currentUser;
 
     //Then we enter home page of application
     res.redirect("/home");

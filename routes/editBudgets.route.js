@@ -20,7 +20,7 @@ const { runQuery } = require("../dbConnection/runFunctions");
 const { currentBudgets } = require("../models/myBudget.model");
 const { editBudgetInfo } = require("../models/editBudgets.model");
 
-router.get("/", async(req, res) => {
+router.get("/", async (req, res) => {
   const getMyBudgetInfosQuery = `SELECT * FROM "FINANCEMANAGER"."Budgets"
                                    WHERE "UserID" LIKE '${currentUser.userID}'`;
   let getMyBudgetInfosQueryResult = await runQuery(getMyBudgetInfosQuery);
@@ -76,8 +76,18 @@ router.post("/", async (req, res) => {
     console.log(budgetEditDateInput);
 
     if (editBudgetInfo.totalAmountUpdate > 0) {
+      const currentSpentQuery = `SELECT "Spent"
+                                 FROM "FINANCEMANAGER"."Budgets"
+                                 WHERE "UserID" LIKE '${currentUser.userID}'
+                                 AND "BudgetID" = ${editBudgetInfo.budgetID}`;
+      let currentSpentQueryResult = await runQuery(currentSpentQuery);
+      console.log(currentSpentQueryResult);
+      let currSpent = currentSpentQueryResult[0][0];
+      console.log(currSpent);
+      let newLeft = editBudgetInfo.totalAmountUpdate - currSpent;
       const updateTotalAmountQuery = `UPDATE "FINANCEMANAGER"."Budgets"
                                         SET "Amount" = ${editBudgetInfo.totalAmountUpdate},
+                                        "Left" = ${newLeft},
                                         "Last Updated On" = SYSDATE
                                         WHERE "UserID" LIKE '${currentUser.userID}'
                                         AND "BudgetID" = ${editBudgetInfo.budgetID}`;

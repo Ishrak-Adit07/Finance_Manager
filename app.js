@@ -100,6 +100,16 @@ const deleteBudgetRouter = require(path.join(
 ));
 app.use("/deleteBudget", deleteBudgetRouter);
 
+const jointAccountsRouter = require(path.join(
+  __dirname + "/routes/jointAccounts.route.js"
+));
+app.use("/jointAccounts", jointAccountsRouter);
+
+const createJointAccountRouter = require(path.join(
+  __dirname + "/routes/createJointAccount.route.js"
+));
+app.use("/createJointAccount", createJointAccountRouter);
+
 const shiftWalletRouter = require(path.join(
   __dirname + "/routes/shiftWallet.route.js"
 ));

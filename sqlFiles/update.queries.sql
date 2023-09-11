@@ -9,10 +9,6 @@ WHERE "UserID" LIKE '${currentUser.userID}';
 
 
 --deleteWallet.route.js
-BEGIN
-UPDATE_TABLES_AFTER_DELETE_WALLET(:USERID, :WALLETID);
-END;
-
 UPDATE "FINANCEMANAGER"."FinancialInfo"
 SET "Amount" = "Amount"+${deleteWalletInfo.amount}
 WHERE "UserID" LIKE '${currentUser.userID}'

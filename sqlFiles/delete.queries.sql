@@ -12,8 +12,3 @@ AND "BudgetID" = ${deleteBudgetID};
 DELETE FROM "FINANCEMANAGER"."FinancialInfo"
 WHERE "UserID" LIKE '${currentUser.userID}'
 AND "WalletID" = ${deleteWalletInfo.walletID}
-
-BEGIN
-DELETE_WALLET_FROM_TABLES(:USERID, :WALLETID);
-END;
-

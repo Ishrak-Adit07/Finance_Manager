@@ -36,43 +36,47 @@
     <h3 style="text-align: center"><%= currentUser.name %></h3>
     <p style="text-align: center">User ID: <%= currentUser.userID %>'s</p>
 
-    <%if(cuurentJointAccounts.length >= 1){ %>
+    <%if(currentJointAccounts.length >= 1){ %>
 
-        <h2 style="text-align: center">Current Budgets</h2>
-        <div style="text-align: center" class="table-container">
-          <table border="1">
-            <th>UserID1</th>
-            <th>UserID2</th>
-            <th>UserID3</th>
-            <th>UserID4</th>
-            <th>UserID5</th>
-            <th>AccountID</th>
-            <th>Amount</th>
-            <% for (var i in cuurentJointAccounts ) { %>
-            <tr>
-              <td><%= currentBudgets[i].param1 %></td>
-              <td><%= currentBudgets[i].param2 %></td>
-              <td><%= currentBudgets[i].param3 %></td>
-              <td><%= currentBudgets[i].param4 %></td>
-              <td><%= currentBudgets[i].param5 %></td>
-              <td><%= currentBudgets[i].param6 %></td>
-              <td><%= currentBudgets[i].param8 %></td>
-            </tr>
-            <%} %>
-          </table>
-        </div>
-    
-        <div style="text-align: center">
-          <form action="/createJointAccount" method="get" style="text-align: center">
-            <button type="submit">Create New Joint Account</button>
-          </form>
-        </div>
-        <br />
-    
-        <%} %> <%if(currentJointAccounts.length < 1){ %>
-    
-        <h2 style="text-align: center">No Current Joint Accounts</h2>
-    
+    <h2 style="text-align: center">Current Budgets</h2>
+    <div style="text-align: center" class="table-container">
+      <table border="1">
+        <th>UserID1</th>
+        <th>UserID2</th>
+        <th>UserID3</th>
+        <th>UserID4</th>
+        <th>UserID5</th>
+        <th>AccountID</th>
+        <th>Amount</th>
+        <% for (var i in currentJointAccounts ) { %>
+        <tr>
+          <td><%= currentJointAccounts[i].param1 %></td>
+          <td><%= currentJointAccounts[i].param2 %></td>
+          <td><%= currentJointAccounts[i].param3 %></td>
+          <td><%= currentJointAccounts[i].param4 %></td>
+          <td><%= currentJointAccounts[i].param5 %></td>
+          <td><%= currentJointAccounts[i].param6 %></td>
+          <td><%= currentJointAccounts[i].param8 %></td>
+        </tr>
         <%} %>
+      </table>
+    </div>
+
+    <%} %> <%if(currentJointAccounts.length < 1){ %>
+
+    <h2 style="text-align: center">No Current Joint Accounts</h2>
+
+    <%} %>
+
+    <div style="text-align: center">
+      <form
+        action="/createJointAccount"
+        method="get"
+        style="text-align: center"
+      >
+        <button type="submit">Create New Joint Account</button>
+      </form>
+    </div>
+    <br />
   </body>
 </html>

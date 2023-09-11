@@ -17,7 +17,7 @@ const {
   saveExpenseInfo,
 } = require("../controllers/expenses.controller");
 var { currentUser } = require("../models/login.model");
-var { newExpenseInfo } = require("../models/newCashInfo.model");
+var { newExpenseInfo, newIncomeInfo } = require("../models/newCashInfo.model");
 const { runQuery } = require("../dbConnection/runFunctions");
 
 router.use(bodyParser.urlencoded({ extended: false }));

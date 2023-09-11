@@ -102,6 +102,7 @@ router.post("/", async (req, res) => {
       senderWalletCheck = true;
     }
 
+    let sameUserID;
     if (currentUser.userID == transactionInfo.receiverUserID) {
       sameUserID = true;
     }

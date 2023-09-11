@@ -23,8 +23,8 @@ router.use(bodyParser.json());
 const path = require("path");
 const { currentJointAccounts } = require("../models/jointAccounts.model");
 
-router.get("/", async(req, res) => {
-    const getMyBudgetInfosQuery = `SELECT * FROM "FINANCEMANAGER"."Budgets"
+router.get("/", async (req, res) => {
+  const getMyBudgetInfosQuery = `SELECT * FROM "FINANCEMANAGER"."Budgets"
                                    WHERE "UserID" LIKE '${currentUser.userID}'`;
   let getMyBudgetInfosQueryResult = await runQuery(getMyBudgetInfosQuery);
 
@@ -34,29 +34,38 @@ router.get("/", async(req, res) => {
                                  OR "UserID3" LIKE '${currentUser.userID}'
                                  OR "UserID4" LIKE '${currentUser.userID}'
                                  OR "UserID5" LIKE '${currentUser.userID}'`;
-    let getJointAccountsQueryResult = await runQuery(getJointAccountsQuery);
+  let getJointAccountsQueryResult = await runQuery(getJointAccountsQuery);
 
-    currentJointAccounts.length = 0;
-    for(var i in getJointAccountsQueryResult){
-        let param1 = getJointAccountsQueryResult[i][1];
-        let param2 = getJointAccountsQueryResult[i][2];
-        let param3 = getJointAccountsQueryResult[i][3];
-        let param4 = getJointAccountsQueryResult[i][4];
-        let param5 = getJointAccountsQueryResult[i][5];
-        let param6 = getJointAccountsQueryResult[i][6];
-        let param7 = getJointAccountsQueryResult[i][7];
-        let param8 = getJointAccountsQueryResult[i][8];
+  currentJointAccounts.length = 0;
 
-        let currJointAccount = { param1, param2, param3, param4, param5, param6, param7, param8};
-        currentJointAccounts.push(currJointAccount);
-    }
+  for (var i in getJointAccountsQueryResult) {
+    let param1 = getJointAccountsQueryResult[i][0];
+    let param2 = getJointAccountsQueryResult[i][1];
+    let param3 = getJointAccountsQueryResult[i][2];
+    let param4 = getJointAccountsQueryResult[i][3];
+    let param5 = getJointAccountsQueryResult[i][4];
+    let param6 = getJointAccountsQueryResult[i][5];
+    let param7 = getJointAccountsQueryResult[i][6];
+    let param8 = getJointAccountsQueryResult[i][7];
+
+    let currJointAccount = {
+      param1,
+      param2,
+      param3,
+      param4,
+      param5,
+      param6,
+      param7,
+      param8,
+    };
+    currentJointAccounts.push(currJointAccount);
+  }
 
   res.render(path.join(__dirname + "/../views/jointAccounts.ejs"), {
+    currentUser,
     currentJointAccounts,
   });
 });
 
-router.post("/", async (req, res) => {
-  
-});
+router.post("/", async (req, res) => {});
 module.exports = router;
